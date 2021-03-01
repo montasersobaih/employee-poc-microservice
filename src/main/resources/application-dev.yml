@@ -1,0 +1,27 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /example
+spring:
+  data:
+    mongodb:
+      uri: mongodb://192.168.2.100:27017/employee
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: 192.168.2.100:9092
+          min-partition-count: 3
+          replication-factor: 1
+        bindings:
+          employee-sample-ms:
+            consumer:
+              start-offset: earliest
+      bindings:
+        outgoing-employee-event:
+          destination: example.employee.event
+          content-type: application/json
+        incoming-employee-event:
+          destination: example.employee.event
+          content-type: application/json
+          group: in.employee.event.group
